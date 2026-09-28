@@ -87,6 +87,7 @@ approved tasks.** Silence is not approval.
 ```
 .
 ├─ README.md            # this file
+├─ LICENSE              # The Unlicense (public domain)
 ├─ AGENT.md             # the operating manual the AI must read every session
 ├─ CLAUDE.md            # pointer to AGENT.md (Claude Code)
 ├─ AGENTS.md            # pointer to AGENT.md (Codex, Copilot agents, Cursor, others)
@@ -347,5 +348,7 @@ See `specs/index.md` for the meaning of each status.
 
 ## License
 
-Use it, fork it, adapt it. Add a license file (for example MIT) that suits how
-you want to share your version.
+This template is released into the **public domain** under [The Unlicense](./LICENSE).
+Use it however you want — personal or commercial, closed or open source, modified
+or as-is — with no attribution required and no obligations. Credit is always
+appreciated, never necessary.

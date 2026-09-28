@@ -97,7 +97,7 @@ approved tasks.** Silence is not approval.
    │  ├─ spec-template.md
    │  ├─ plan-template.md
    │  └─ tasks-template.md
-   └─ 000-example-dark-mode-toggle/   # a filled-in example (delete it later)
+   └─ 000-example-thrown-item-damage-aggro/   # a filled-in example (delete it later)
       ├─ spec.md
       ├─ plan.md
       └─ tasks.md
@@ -127,7 +127,7 @@ approved tasks.** Silence is not approval.
 3. **Write your first constitution.** Open `specs/constitution.md` and replace the
    placeholders — at minimum: the non-negotiable constraints (1.1), the quality
    budget (1.2) and the conventions (1.4). Keep it short at first; it grows.
-4. **Delete the example.** Remove `specs/000-example-dark-mode-toggle/` and its row
+4. **Delete the example.** Remove `specs/000-example-thrown-item-damage-aggro/` and its row
    in `specs/index.md` (read it first — it shows what "good" looks like).
 5. **Start your first feature** with the prompts below.
 
@@ -298,9 +298,13 @@ None — the template is engine-neutral on purpose. Fill the constitution with t
 engine you use; if you use several across projects, keep one copy of the template
 per project.
 
-**The example feature looks like a UI toggle, not a game feature. Why?**
-It is deliberately engine-neutral so it reads the same for Unreal, Unity and
-Godot. Replace it with your own first feature once you have read it.
+**What is the example feature?**
+`000-example-thrown-item-damage-aggro` is adapted from a real stealth-game
+feature: throwing an item hits an enemy, deals non-lethal damage and wakes it from
+patrol. It is written with engine-neutral names (with an engine-mapping note in the
+plan) so it reads the same for Unreal, Unity and Godot. It is left mid-implementation
+on purpose, so you can see a filled-in spec, an approved plan, and a `tasks.md` with
+done, doing and todo tasks. Delete it once you have read it.
 
 **Is this too heavy for small changes?**
 Use the lightweight path (see `AGENT.md` §3): each document can be a few lines.

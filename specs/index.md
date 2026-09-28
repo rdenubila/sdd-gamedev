@@ -25,7 +25,7 @@ draft → specified → planned → tasked → implementing → validating → d
 
 | ID | Feature | Status | Last update |
 |---|---|---|---|
-| 000 | [example-dark-mode-toggle](./000-example-dark-mode-toggle/) — **EXAMPLE, delete when you start** | implementing | 2026-01-01 |
+| 000 | [example-thrown-item-damage-aggro](./000-example-thrown-item-damage-aggro/) — **EXAMPLE, delete when you start** | implementing | 2026-01-04 |
 
 <!--
 When adding a feature, use a row like this:

@@ -1,13 +1,22 @@
-# SDD Template — Spec-Driven Development with AI agents
+# SDD Game Dev Template — Spec-Driven Development for game projects with AI agents
 
-A ready-to-use repository template for **Spec-Driven Development (SDD)**: a
-lightweight, document-first workflow where every feature goes through
-**specify → plan → task → implement → validate**, with an explicit human approval
-at each gate.
+A ready-to-use repository template for **Spec-Driven Development (SDD) in game
+development**: a lightweight, document-first workflow where every feature goes
+through **specify → plan → task → implement → validate**, with an explicit human
+approval at each gate.
 
-It was born from a real project (an indie game built with an AI agent driving the
-editor through MCP) and generalized so it works for any stack — web apps, APIs,
-games, data pipelines, infrastructure code — and any AI coding tool.
+It is **built for game projects and engine-agnostic**: use it with **Unreal
+Engine**, **Unity**, **Godot**, or any other engine or framework. It was born from
+a real indie game made in Unreal with an AI agent driving the editor through MCP,
+and generalized so the process stays the same while the engine-specific knowledge
+lives in one place — your constitution.
+
+| Engine | Works with this template? | Where the engine shows up |
+|---|---|---|
+| **Unreal Engine** (Blueprints and/or C++) | Yes | Constitution: asset paths and prefixes, Blueprint/C++ rules, platform budgets |
+| **Unity** (C#) | Yes | Constitution: scenes/prefabs/ScriptableObjects, assemblies, render pipeline, budgets |
+| **Godot** (GDScript and/or C#) | Yes | Constitution: scene/node/resource structure, script conventions, export targets |
+| Others (Defold, Bevy, custom engines…) | Yes | Same idea — the process never mentions an engine |
 
 ---
 
@@ -25,6 +34,28 @@ chat:
 - **Any session can resume** — progress lives in `tasks.md`, knowledge lives in
   the constitution.
 - **Lessons are never lost** — every gotcha discovered goes into the constitution.
+
+---
+
+## Why it fits game development
+
+Games are exactly where "just let the AI code it" hurts the most:
+
+- **You cannot fully test a game without playing it.** An AI can compile and run
+  automated tests, but it cannot judge game feel, readability, difficulty or
+  animation. SDD splits every task's validation into **static validation (AI)**
+  and a **manual playtest (you)**, with concrete steps and pass criteria.
+- **Performance budgets are design constraints**, often per platform (PC, console,
+  handheld, mobile). They live in constitution §1.2, so every plan is weighed
+  against them.
+- **Engines hide state in editor data** (scenes, prefabs, assets, node trees,
+  Blueprints). The plan stage forces the agent to *inspect the real project state
+  first* instead of guessing what exists.
+- **Editor tooling has quirks.** Every workaround you discover (a node that does
+  not connect, a serialization gotcha, an import setting) goes into constitution
+  Part 2 so it is never rediscovered.
+- **Features touch many systems** (input, animation, AI, UI, audio). Small tasks
+  with declared dependencies keep the changes reviewable and reversible.
 
 ---
 
@@ -188,9 +219,10 @@ The process is tool-agnostic — it is just Markdown. Point your tool at
 - **Anything else** — paste "Read `AGENT.md`, then `specs/constitution.md`" at the
   start of the session.
 
-If your tooling exposes a way to inspect the running system (an MCP server, a CLI,
-a database console, a debugger), mention it in `AGENT.md` section 5 and in
-constitution 1.3, and require it in the plan stage: *"inspect before you plan."*
+If your tooling exposes a way to inspect the running project (an engine/editor
+MCP server, a CLI, a scripting console, a debugger), mention it in `AGENT.md`
+section 5 and in constitution 1.3, and require it in the plan stage: *"inspect
+before you plan."*
 
 ---
 
@@ -206,20 +238,69 @@ Most of it is meant to be used as-is. The places you are expected to adapt:
 | `templates/*.md` | Add domain-specific sections (e.g. "Security review", "Migration plan", "Performance measurement") |
 | `index.md` | Add statuses if your team needs them |
 
-Ideas by domain:
+### Setting up for your engine
 
-- **Web / backend:** add "API contract" and "Migration plan" sections to the plan
-  template; put SLOs in constitution 1.2.
-- **Games:** put frame-time budgets per target platform in 1.2; make the manual
-  test explicitly "play the build"; record engine/tool quirks in Part 2.
-- **Data / ML:** add "Dataset and evaluation" to the spec, and metrics
-  thresholds to the acceptance criteria.
-- **Infrastructure:** make static validation include `plan`/`diff` output and
-  policy checks; make the manual test a staged rollout.
+Everything engine-specific belongs in `specs/constitution.md` and the environment
+table of `AGENT.md`. Suggested starting points:
+
+**Unreal Engine**
+- 1.1: Blueprint-only vs. C++/hybrid; which gameplay classes are canonical and
+  which are deprecated.
+- 1.2: frame-time and memory budgets per target platform; rendering choices
+  (lighting method, shadows, Nanite/Lumen on or off).
+- 1.4: content folder layout (`/Game/...`), asset prefixes (`BP_`, `M_`, `T_`,
+  `SM_`, `SK_`, `NS_`, `IA_`…).
+- Static validation: compile Blueprints / build the module, re-read graphs, check
+  for compile warnings. Manual test: Play In Editor (PIE) or a packaged build.
+- Part 2: editor-automation (MCP) quirks, node recipes, asset-move gotchas.
+
+**Unity**
+- 1.1: render pipeline (Built-in / URP / HDRP), scripting backend, Unity version.
+- 1.2: frame budget, draw calls / batching limits, memory and build-size targets.
+- 1.4: folder layout under `Assets/`, assembly definitions, naming for scenes,
+  prefabs and ScriptableObjects, `.meta` file policy in version control.
+- Static validation: script compilation with 0 errors, Edit Mode and Play Mode
+  tests (Unity Test Framework), re-reading changed prefabs/scenes.
+  Manual test: Play mode in the Editor or a device build.
+- Part 2: serialization gotchas, prefab-override pitfalls, editor-scripting recipes.
+
+**Godot**
+- 1.1: Godot version, GDScript vs. C#, renderer (Forward+ / Mobile /
+  Compatibility).
+- 1.2: frame budget and target export platforms.
+- 1.4: scene/node/resource structure, autoload (singleton) policy, script and
+  signal naming, `.tscn`/`.tres` merge policy in version control.
+- Static validation: project loads and runs headless with no errors, unit tests
+  (GUT or gdUnit4), re-reading the changed scenes and scripts.
+  Manual test: run the scene (F5/F6) or an exported build.
+- Part 2: signal/lifecycle gotchas, resource-sharing pitfalls, export quirks.
+
+**Ideas by kind of game or system**
+- **Gameplay features** (movement, combat, AI, items): make the manual test a
+  scripted playtest — "do this, observe that, pass if…" — and reference the
+  acceptance criteria.
+- **Performance work** (lighting, LODs, culling): put the *measured* before/after
+  numbers in the task's progress log and tie the acceptance criteria to budget
+  targets in 1.2.
+- **Content pipelines** (art import, level tooling): record naming, import
+  settings and folder rules in 1.4, and clean-up/quarantine rules in Part 2.
+- **UI / menus / settings:** add a "Platform inputs and accessibility" section
+  to the spec template (gamepad, keyboard, touch, remapping).
+- **Multiplayer:** add "Authority and replication" to the plan template and
+  latency/tick-rate budgets to 1.2.
 
 ---
 
 ## Tips and FAQ
+
+**Which engine should I pick in the constitution?**
+None — the template is engine-neutral on purpose. Fill the constitution with the
+engine you use; if you use several across projects, keep one copy of the template
+per project.
+
+**The example feature looks like a UI toggle, not a game feature. Why?**
+It is deliberately engine-neutral so it reads the same for Unreal, Unity and
+Godot. Replace it with your own first feature once you have read it.
 
 **Is this too heavy for small changes?**
 Use the lightweight path (see `AGENT.md` §3): each document can be a few lines.
